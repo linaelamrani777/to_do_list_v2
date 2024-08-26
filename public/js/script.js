@@ -39,6 +39,67 @@ document.addEventListener('DOMContentLoaded', () => {
         }, reminderTime);
     }
 
+    function deleteTask(id) {
+        fetch(`http://localhost:3000/api/tasks/${id}`, {
+            method: 'DELETE',
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data)
+        }).catch(e => {
+            console.log(e);
+        })
+
+    }
+
+    function generate_list(task) {
+        const taskList = document.getElementById('task-list');
+        const newTask = document.createElement('li');
+        newTask.classList.add('task-item');
+
+        const taskContent = document.createElement('div');
+        taskContent.classList.add('task-content');
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.classList.add('task-checkbox');
+
+        const taskText = document.createElement('span');
+        taskText.classList.add('task-text');
+        taskText.textContent = task.name;
+
+        taskContent.appendChild(checkbox);
+        taskContent.appendChild(taskText);
+        newTask.appendChild(taskContent);
+
+        if (task.description) {
+            const taskDescriptionElem = document.createElement('div');
+            taskDescriptionElem.classList.add('task-description');
+            taskDescriptionElem.textContent = task.description;
+            newTask.appendChild(taskDescriptionElem);
+        }
+
+        if (task.imageUrl) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(task.imageUrl);
+            img.classList.add('task-image');
+            newTask.appendChild(img);
+        }
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '❌';
+        deleteButton.classList.add('delete-button');
+        deleteButton.addEventListener('click', () => {
+            deleteTask(task._id)
+            newTask.classList.add('fade-out');
+            setTimeout(() => taskList.removeChild(newTask), 300);
+        });
+        newTask.appendChild(deleteButton);
+
+        taskList.appendChild(newTask);
+        setTaskReminder(task.name, task.reminder.hours, task.reminder.minutes);
+    }
+
     document.getElementById('add-task').addEventListener('click', () => {
         console.log('Add Task button clicked');
 
@@ -61,56 +122,34 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Image File:', imageFile);
 
         if (taskValue) {
-            const taskList = document.getElementById('task-list');
-            const newTask = document.createElement('li');
-            newTask.classList.add('task-item');
+            fetch('http://localhost:3000/api/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "name": taskValue,
+                    "description": taskDescription,
+                    "reminder": { 
+                        "hours": reminderHours,
+                        "minutes": reminderMinutes,
+                    },
+                    "imageUrl": imageFile,
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                generate_list(data)
+            }).catch(e => {
+                console.log(e);
+            })
 
-            const taskContent = document.createElement('div');
-            taskContent.classList.add('task-content');
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.classList.add('task-checkbox');
-
-            const taskText = document.createElement('span');
-            taskText.classList.add('task-text');
-            taskText.textContent = taskValue;
-
-            taskContent.appendChild(checkbox);
-            taskContent.appendChild(taskText);
-            newTask.appendChild(taskContent);
-
-            if (taskDescription) {
-                const taskDescriptionElem = document.createElement('div');
-                taskDescriptionElem.classList.add('task-description');
-                taskDescriptionElem.textContent = taskDescription;
-                newTask.appendChild(taskDescriptionElem);
-            }
-
-            if (imageFile) {
-                const img = document.createElement('img');
-                img.src = URL.createObjectURL(imageFile);
-                img.classList.add('task-image');
-                newTask.appendChild(img);
-            }
-
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = '❌';
-            deleteButton.classList.add('delete-button');
-            deleteButton.addEventListener('click', () => {
-                newTask.classList.add('fade-out');
-                setTimeout(() => taskList.removeChild(newTask), 300);
-            });
-            newTask.appendChild(deleteButton);
-
-            taskList.appendChild(newTask);
             taskInput.value = '';
             descriptionInput.value = '';
             hoursInput.value = '';
             minutesInput.value = '';
             taskImageInput.value = '';
-
-            setTaskReminder(taskValue, reminderHours, reminderMinutes);
         } else {
             console.log('Please enter a task.');
         }
@@ -127,4 +166,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // get the data form the db
+    fetch('http://localhost:3000/api/tasks')
+        .then(res => res.json())
+        .then(tasks => {
+            tasks.forEach(task => {
+                console.log("=>", task)
+                generate_list(task)
+            })
+        }).catch(e => {
+            console.log(e);
+        })
+
 });
