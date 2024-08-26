@@ -1,0 +1,204 @@
+/* Base Styling */
+body {
+    font-family: 'Josefin Slab', serif;
+    background: url('your-background-image.jpg') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    text-align: center;
+}
+
+/* Background Container */
+.background-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.8); /* Light overlay for readability */
+}
+
+/* Main Container */
+.container {
+    background: rgba(255, 255, 255, 0.9); /* Slightly opaque background */
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+}
+
+.container:hover {
+    transform: scale(1.02); /* Slight scale effect on hover */
+}
+
+/* Heading */
+h1 {
+    color: #ff6f91; /* Soft pink color */
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    font-family: 'Josefin Slab', serif;
+    background: linear-gradient(to right, #ff6f91, #ff3d7f); /* Gradient text */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Input Container */
+.input-container {
+    margin-bottom: 20px;
+    display: grid;
+    gap: 10px; /* Space between inputs */
+    justify-content: center;
+}
+
+/* Input and Button Styling */
+.input-container input[type="text"],
+.input-container input[type="number"],
+.input-container input[type="file"] {
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid #ff6f91;
+    font-size: 16px;
+    width: 100%;
+    max-width: 300px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-container input[type="text"]:focus,
+.input-container input[type="number"]:focus {
+    border-color: #ff3d7f;
+    outline: none;
+    box-shadow: 0 0 8px rgba(255, 61, 127, 0.5); /* Glow effect on focus */
+}
+
+.input-container button {
+    background-color: #ff6f91;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-container button:hover {
+    background-color: #ff3d7f;
+    transform: scale(1.05);
+}
+
+.input-container button:active {
+    background-color: #ff1e6c;
+    transform: scale(0.95);
+}
+
+/* Task List */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Task Items */
+li {
+    background: rgba(255, 255, 255, 0.9);
+    margin: 12px 0;
+    padding: 15px;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+
+li:hover {
+    transform: translateY(-5px);
+}
+
+/* Task Content */
+.task-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.task-checkbox {
+    margin-right: 12px;
+}
+
+.task-text {
+    font-size: 18px;
+    color: #ff6f91;
+    transition: color 0.3s ease;
+}
+
+.task-checkbox:checked + .task-text {
+    color: #d0d0d0;
+    text-decoration: line-through;
+}
+
+.task-description {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Task Images */
+.task-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    margin-top: 10px;
+    transition: transform 0.3s ease;
+}
+
+.task-image:hover {
+    transform: scale(1.1);
+}
+
+/* Completed Task */
+.completed-task {
+    text-decoration: line-through;
+    color: #d0d0d0;
+}
+
+.completed-task::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: #ff6f91;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+/* Delete Button */
+.delete-button {
+    background: none;
+    border: none;
+    color: #ff6f91;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: color 0.3s ease;
+}
+
+.delete-button:hover {
+    color: #ff3d7f;
+}
+
+/* Fade-Out Animation */
+.task-item.fade-out {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
