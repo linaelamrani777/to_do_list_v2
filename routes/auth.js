@@ -33,4 +33,15 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Verify Token Route
+router.post('/verify-token', (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ valid: false });
+        }
+        res.json({ valid: true });
+    });
+});
+
 module.exports = router;

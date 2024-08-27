@@ -1,5 +1,43 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const API_URL = 'http://localhost:3000'; 
+
     console.log('JavaScript is running');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        console.log('You are not logged in!');
+        window.location.href = '/auth.html';  // Redirect to login page
+        return;
+    }
+
+    fetch(`${API_URL}/api/auth/verify-token`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.valid) {
+            console.log('Invalid token! Please log in again.');
+            localStorage.removeItem('token');
+            window.location.href = '/auth.html';  // Redirect to login page
+        }
+    })
+    .catch(error => {
+        console.error('Error verifying token:', error);
+        console.log('An error occurred while verifying your session.');
+        window.location.href = '/auth.html';  // Redirect to login page
+    });
+
+    function logout() {
+        localStorage.removeItem('token');
+        window.location.href = '/auth.html';
+    }
+    
+    document.getElementById('logoutButton').addEventListener('click', logout);
 
     if (Notification.permission === 'default') {
         Notification.requestPermission().then(permission => {
@@ -40,8 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function deleteTask(id) {
-        fetch(`http://localhost:3000/api/tasks/${id}`, {
+        fetch(`${API_URL}/api/tasks/${id}`, {
             method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
         })
         .then(res => res.json())
         .then(data => {
@@ -128,10 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Image File:', imageFile);
 
         if (taskValue) {
-            fetch('http://localhost:3000/api/tasks', {
+            fetch(`${API_URL}/api/tasks`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify({
                     "name": taskValue,
@@ -167,10 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const taskText = taskItem.querySelector('.task-text');
             id = event.target.dataset.id
             if (event.target.checked) {
-                fetch(`http://localhost:3000/api/tasks/${id}`, {
+                fetch(`${API_URL}/api/tasks/${id}`, {
                     method: 'PATCH',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
                     },
                     body: JSON.stringify({
                         "completed": true,
@@ -184,10 +227,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log(e);
                 })
             } else {
-                fetch(`http://localhost:3000/api/tasks/${id}`, {
+                fetch(`${API_URL}/api/tasks/${id}`, {
                     method: 'PATCH',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
                     },
                     body: JSON.stringify({
                         "completed": false,
@@ -204,16 +248,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // get the data form the db
-    fetch('http://localhost:3000/api/tasks')
-        .then(res => res.json())
-        .then(tasks => {
-            tasks.forEach(task => {
-                console.log("=>", task)
-                generate_list(task)
-            })
-        }).catch(e => {
-            console.log(e);
+    fetch(`${API_URL}/api/tasks`, {
+        headers: {'Authorization': `Bearer ${token}`},
+    })
+    .then(res => res.json())
+    .then(tasks => {
+        tasks.forEach(task => {
+            console.log("=>", task)
+            generate_list(task)
         })
+    }).catch(e => {
+        console.log(e);
+    })
 
 });
