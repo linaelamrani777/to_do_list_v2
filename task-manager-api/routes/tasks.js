@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/Task');
+const authMiddleware = require('../middleware/auth');
 
 // Get all tasks
-router.get('/', async (req, res) => {
+router.get('/', authMiddleware, async (req, res) => {
     try {
         const tasks = await Task.find();
         res.json(tasks);
@@ -13,7 +14,7 @@ router.get('/', async (req, res) => {
 });
 
 // Create a new task
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     const task = new Task({
         name: req.body.name,
         description: req.body.description,
@@ -34,15 +35,16 @@ router.post('/', async (req, res) => {
 });
 
 // Update a task
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', authMiddleware, async (req, res) => {
     try {
         const task = await Task.findById(req.params.id);
         if (task) {
-            task.name = req.body.name || task.name;
-            task.description = req.body.description || task.description;
-            task.reminder.hours = req.body.reminder.hours || task.reminder.hours;
-            task.reminder.minutes = req.body.reminder.minutes || task.reminder.minutes;
-            task.imageUrl = req.body.imageUrl || task.imageUrl;
+            // Update fields only if they are provided
+            // task.name = req.body.name || task.name;
+            // task.description = req.body.description || task.description;
+            // task.reminder.hours = req.body.reminder?.hours || task.reminder.hours;
+            // task.reminder.minutes = req.body.reminder?.minutes || task.reminder.minutes;
+            // task.imageUrl = req.body.imageUrl || task.imageUrl;
             task.completed = req.body.completed !== undefined ? req.body.completed : task.completed;
 
             const updatedTask = await task.save();
@@ -56,7 +58,7 @@ router.patch('/:id', async (req, res) => {
 });
 
 // Delete a task
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
     try {
         const task = await Task.findByIdAndDelete(req.params.id);
         if (task) {

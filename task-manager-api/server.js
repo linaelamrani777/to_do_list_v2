@@ -1,25 +1,27 @@
+require('dotenv').config(); // Load environment variables
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const taskRoutes = require('./routes/tasks');
+const authRoutes = require('./routes/auth');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(bodyParser.json());
 app.use(cors());
 
+// Routes
+app.use('/api/tasks', taskRoutes);
+app.use('/api/auth', authRoutes);
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.error('Failed to connect to MongoDB', err));
 
-// Define routes
-app.use('/api/tasks', require('./routes/tasks'));
-
-// Start server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

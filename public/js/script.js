@@ -63,10 +63,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.classList.add('task-checkbox');
+        checkbox.dataset.id = task._id
+
 
         const taskText = document.createElement('span');
         taskText.classList.add('task-text');
         taskText.textContent = task.name;
+        if (task.completed) {
+            taskText.classList.add('completed-task');
+            checkbox.checked = true
+        }
 
         taskContent.appendChild(checkbox);
         taskContent.appendChild(taskText);
@@ -159,10 +165,41 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target.classList.contains('task-checkbox')) {
             const taskItem = event.target.closest('.task-item');
             const taskText = taskItem.querySelector('.task-text');
+            id = event.target.dataset.id
             if (event.target.checked) {
-                taskText.classList.add('completed-task');
+                fetch(`http://localhost:3000/api/tasks/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "completed": true,
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    taskText.classList.add('completed-task');
+                }).catch(e => {
+                    console.log(e);
+                })
             } else {
-                taskText.classList.remove('completed-task');
+                fetch(`http://localhost:3000/api/tasks/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "completed": false,
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log(data)
+                    taskText.classList.remove('completed-task');
+                }).catch(e => {
+                    console.log(e);
+                })
             }
         }
     });
