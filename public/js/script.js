@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (task.imageUrl) {
             const img = document.createElement('img');
-            img.src = URL.createObjectURL(task.imageUrl);
+            img.src = task.imageUrl;
             img.classList.add('task-image');
             newTask.appendChild(img);
         }
@@ -160,13 +160,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const taskDescription = descriptionInput.value.trim();
         const reminderHours = parseInt(hoursInput.value, 10) || 0;
         const reminderMinutes = parseInt(minutesInput.value, 10) || 0;
-        const imageFile = taskImageInput.files[0];
+        const file = taskImageInput.files[0];
+        let imageUrl = ""
+        if (file) {
+            imageUrl = URL.createObjectURL(file);
+        }
 
         console.log('Task Value:', taskValue);
         console.log('Description:', taskDescription);
         console.log('Reminder Hours:', reminderHours);
         console.log('Reminder Minutes:', reminderMinutes);
-        console.log('Image File:', imageFile);
+        console.log('Image Url:', imageUrl);
 
         if (taskValue) {
             fetch(`${API_URL}/api/tasks`, {
@@ -182,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         "hours": reminderHours,
                         "minutes": reminderMinutes,
                     },
-                    "imageUrl": imageFile,
+                    "imageUrl": imageUrl,
                 })
             })
             .then(res => res.json())

@@ -3,39 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/auth.css">
     <title>Authentication</title>
 </head>
 <body>
+    <div>
+        <h1>Sign Up</h1>
+        <form id="signupForm">
+            <label>
+                Username:
+                <input type="text" id="signupUsername" required>
+            </label>
+            <br><br>
+            <label>
+                Password:
+                <input type="password" id="signupPassword" required>
+            </label>
+            <br><br>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
 
-    <h1>Sign Up</h1>
-    <form id="signupForm">
-        <label>
-            Username:
-            <input type="text" id="signupUsername" required>
-        </label>
-        <br><br>
-        <label>
-            Password:
-            <input type="password" id="signupPassword" required>
-        </label>
-        <br><br>
-        <button type="submit">Sign Up</button>
-    </form>
-
-    <h1>Login</h1>
-    <form id="loginForm">
-        <label>
-            Username:
-            <input type="text" id="loginUsername" required>
-        </label>
-        <br><br>
-        <label>
-            Password:
-            <input type="password" id="loginPassword" required>
-        </label>
-        <br><br>
-        <button type="submit">Login</button>
-    </form>
+    <div>
+        <h1>Login</h1>
+        <form id="loginForm">
+            <label>
+                Username:
+                <input type="text" id="loginUsername" required>
+            </label>
+            <br><br>
+            <label>
+                Password:
+                <input type="password" id="loginPassword" required>
+            </label>
+            <br><br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
 
     <script src="js/auth.js"></script>
 </body>
