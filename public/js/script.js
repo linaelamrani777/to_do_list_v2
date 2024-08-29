@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const API_URL = 'http://localhost:3000'; 
+    const API_URL = `${window.location.protocol}//${window.location.host}`;
 
     console.log('JavaScript is running');
     const token = localStorage.getItem('token');
