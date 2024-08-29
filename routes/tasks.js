@@ -6,7 +6,8 @@ const authMiddleware = require('../middleware/auth');
 // Get all tasks
 router.get('/', authMiddleware, async (req, res) => {
     try {
-        const tasks = await Task.find();
+        const userId = req.user.id;
+        const tasks = await Task.find({ userId });
         res.json(tasks);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -15,6 +16,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
 // Create a new task
 router.post('/', authMiddleware, async (req, res) => {
+    const userId = req.user.id;
     const task = new Task({
         name: req.body.name,
         description: req.body.description,
@@ -23,7 +25,8 @@ router.post('/', authMiddleware, async (req, res) => {
             minutes: req.body.reminder.minutes || 0
         },
         imageUrl: req.body.imageUrl,
-        completed: req.body.completed || false
+        completed: req.body.completed || false,
+        userId: userId
     });
 
     try {
@@ -37,7 +40,10 @@ router.post('/', authMiddleware, async (req, res) => {
 // Update a task
 router.patch('/:id', authMiddleware, async (req, res) => {
     try {
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findById({
+            _id: req.params.id,
+            userId: req.user.id
+        });
         if (task) {
             // Update fields only if they are provided
             // task.name = req.body.name || task.name;
@@ -60,7 +66,10 @@ router.patch('/:id', authMiddleware, async (req, res) => {
 // Delete a task
 router.delete('/:id', authMiddleware, async (req, res) => {
     try {
-        const task = await Task.findByIdAndDelete(req.params.id);
+        const task = await Task.findByIdAndDelete({
+            _id: req.params.id,
+            userId: req.user.id
+        });
         if (task) {
             res.json({ message: 'Task deleted' });
         } else {
