@@ -22,7 +22,7 @@ Gained experience in full-stack development, including both frontend and backend
 Improved skills in handling user authentication, API integration, and task management systems.
 Learned effective ways to debug and optimize web applications.
 ## 🔗 Links
-LinkedIn: Lina El Amrani <!-- (https://www.linkedin.com/in/lina-el-amrani-00b762289/) -->
+LinkedIn: Lina El Amrani <!-(https://www.linkedin.com/in/lina-el-amrani-00b762289/) -->
 
 ## 🤝 Contributing
 
