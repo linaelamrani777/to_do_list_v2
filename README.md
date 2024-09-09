@@ -2,8 +2,6 @@
 
 Welcome to the **To-Do List App**—your charming tool designed to keep you organized and on top of your tasks! ✨
 
-![To-Do List App Screenshot](https://example.com/screenshot.png) 
-
 ## 🌟 Features
 
 - **🌐 Web Tracking**: Manage your tasks from any device, anywhere!
