@@ -29,7 +29,7 @@ Read about my journey developing **Orchid Planner**: [Project Blog]([link_to_blo
 ## 👩‍💻 Author
 
 **Lina El Amrani**  
-- [LinkedIn]((https://www.linkedin.com/in/lina-el-amrani-00b762289/))  
+- [LinkedIn](https://www.linkedin.com/in/lina-el-amrani-00b762289/) 
 - [GitHub](https://github.com/linaelamrani777)
 
 ## ⚙️ Installation
@@ -46,7 +46,7 @@ To get the app up and running locally, follow these steps:
      ```
 3. **Install dependencies**:
   ```bash
-npm install
+    npm install
  ```
 4. **Start the application**:
     ```bash
@@ -65,8 +65,8 @@ Contributions are welcome! To contribute:
 5.Open a pull request
 
 ## 🔗 Related Projects
-Todoist [(https://www.linkedin.com/in/lina-el-amrani-00b762289/)]
-Landing page ((https://mydolist.mystrikingly.com/))
+Todoist (https://www.linkedin.com/in/lina-el-amrani-00b762289/)
+Landing page (https://mydolist.mystrikingly.com/)
 
 ## 📜 License
 
