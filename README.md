@@ -45,9 +45,9 @@ To get the app up and running locally, follow these steps:
       cd to_do_list_v2
      ```
 3. **Install dependencies**:
-  ```bash
+    ```bash
     npm install
- ```
+   ```
 4. **Start the application**:
     ```bash
     npm start
